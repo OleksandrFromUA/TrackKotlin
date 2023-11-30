@@ -1,13 +1,9 @@
 <resources>
-    <string name="app_name">Tracker</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="signup">SignUp</string>
-    <string name="do_not_have_an_account">Do not have an account?</string>
-    <string name="sign_in">Sign In</string>
-    <string name="forgot_password">Forgot Password?</string>
-    <string name="password">password</string>
-    <string name="user_name">user name</string>
-    <string name="title_feature">Module Title</string>
-    <string name="title_features">Module Title</string>
+
+    <string name="user_name">User name</string>
+    <string name="password">Password</string>
+    <string name="Forgot_password">Forgot Password?</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="don_t_have_an_account" >Do not have an account?</string>
 </resources>

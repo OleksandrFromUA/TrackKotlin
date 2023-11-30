@@ -15,7 +15,8 @@ android {
     defaultConfig {
         applicationId = "com.example.tracker"
         minSdk = 24
-        targetSdk = 33
+        //noinspection EditedTargetSdkVersion
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -40,10 +41,9 @@ android {
 
     }
 
-    buildFeatures {
+   /* buildFeatures {
         dataBinding = true
-    }
-    dynamicFeatures += setOf(":feature", ":features")
+    }*/
 }
 
 
@@ -66,10 +66,14 @@ dependencies {
 
     implementation ("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation ("androidx.navigation:navigation-ui-ktx:2.7.5")
-    implementation("androidx.navigation:navigation-dynamic-features-fragment:2.7.5")
     implementation("androidx.navigation:navigation-compose:2.7.5")
 
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
 
-    //implementation project(Modules.
+    implementation(project(":core:data"))
+    implementation(project(":core:dataBase"))
+    implementation(project(":features:auth"))
+    implementation(project(":features:map"))
+    implementation(project(":features:tracker"))
+
 }

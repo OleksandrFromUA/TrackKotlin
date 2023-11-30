@@ -15,13 +15,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "Tracker"
 include(":app")
-
-
-
-include(":features")
+include(":appMap")
+include(":core:data")
+include(":core:dataBase")
+include(":features:auth")
 include(":features:map")
 include(":features:tracker")
-include(":features:auth")
-include(":appMap")
-include(":data")
-include(":dataBase")

@@ -8,9 +8,9 @@
 
     <fragment
         android:id="@+id/authFragment"
-        android:name="com.example.tracker.AuthenticationFragment"
+        android:name="com.example.auth.presentation.AuthFragment"
         android:label="AuthFragment"
-        tools:layout="@layout/fragment_authentication"/>
+        tools:layout="@layout/fragment_auth"/>
 
     <action
         android:id="@+id/action_authFragment_to_trackerFragment"
@@ -20,10 +20,20 @@
         android:id="@+id/action_trackerFragment_to_authFragment"
         app:destination="@id/authFragment" />
 
+
     <fragment
         android:id="@+id/trackerFragment"
-        android:name="com.example."
+        android:name="com.example.tracker.TrackerFragment"
         android:label="TrackerFragment"
         tools:layout="@layout/fragment_tracker" />
 
+    <action
+        android:id="@+id/action_trackerFragment_to_mapFragment"
+        app:destination="@id/mapFragment" />
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.map.presentation.MapFragment"
+        android:label="MapFragment"
+        tools:layout="@layout/fragment_map" />
 </navigation>
