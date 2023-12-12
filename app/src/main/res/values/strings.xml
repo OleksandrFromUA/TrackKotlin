@@ -1,4 +1,6 @@
-<resources>
+<resources >
     <string name="app_name">Tracker</string>
+    <string name="my_foreground_service">My foreground Service</string>
+    <string name="tracking_location">Tracking location</string>
 
 </resources>

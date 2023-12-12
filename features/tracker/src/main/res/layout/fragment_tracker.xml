@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TrackerFragment">
+    tools:context=".presentation.TrackerFragment">
 
     <Button
         android:id="@+id/Start"
@@ -22,9 +22,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints"/>
-       <!-- app:menu="@menu/toolbar_menu"-->
-      <!--  />-->
+        tools:ignore="MissingConstraints"
+        app:menu="@menu/toolbar_meny" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

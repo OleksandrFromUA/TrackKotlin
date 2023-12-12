@@ -6,4 +6,11 @@
     <string name="sign_in">SIGN IN</string>
     <string name="sign_up">Sign Up</string>
     <string name="don_t_have_an_account" >Do not have an account?</string>
+    <string name="email_and_password_fields_are_empty">Email and password fields are empty</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="registration_are_successful">Registration are successful</string>
+    <string name="registration_failed">registration failed</string>
+    <string name="user_in_the_system">User in the System</string>
+    <string name="user_not_registered_please_register">" User not registered, please register"</string>
+    <string name="error_occurred">Error occurred</string>
 </resources>

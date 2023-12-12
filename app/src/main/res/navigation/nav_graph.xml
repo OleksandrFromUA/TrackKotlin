@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/trackerFragment"
-        android:name="com.example.tracker.TrackerFragment"
+        android:name="com.example.tracker.presentation.TrackerFragment"
         android:label="TrackerFragment"
         tools:layout="@layout/fragment_tracker" />
 
