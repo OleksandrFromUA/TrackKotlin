@@ -25,7 +25,9 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.data.LocationData
+import com.example.map.InterfaceForNavigation
 import com.example.map.MyDialogCalendar
 import com.example.map.R
 import com.example.map.databinding.FragmentMapBinding
@@ -36,9 +38,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 
-class MapFragment : Fragment(), OnMapReadyCallback {
+class MapFragment(private val interfaceForNavigation: InterfaceForNavigation) : Fragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentMapBinding
     private lateinit var viewModel: MapViewModel
     private lateinit var myGoogleMap: GoogleMap
@@ -140,7 +143,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 when (menuItem.itemId) {
                     R.id.actionLogout -> {
                         viewModel.logOut()
-                        //переход на фрагмент аутентификации
+                        interfaceForNavigation.navigateToAuthFragment()
                         return true
                     }
 
@@ -167,19 +170,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         myGoogleMap?.let {
             val current = FirebaseAuth.getInstance().currentUser
             if (current != null) {
+                lifecycleScope.launch {
+                    viewModel.coordinatesFlow.collect {
+                        updateMapAndShowCoordinatesOnMap(it)
+                    }
+                }
                 childFragmentManager.setFragmentResultListener(
                     MyDialogCalendar.SelectedDay,
                     this
                 ) { _, result ->
                     val newDateResult = result.getLong(MyDialogCalendar.SelectedDay)
+                    lifecycleScope.launch {
+                        viewModel.updatingInterface(newDateResult)
+                    }
 
-                    viewModel.updatingInterface(newDateResult)//прослушивание изменений
-
-                        /* if (coordinates != null) {
-                        updateMapAndShowCoordinatesOnMap(coordinates)
-                    } else {
-                        Log.e("MyTag", "Coordinates are null")
-                    }*/
                 }
             } else {
                 Log.e("teg", "User is not authenticated")

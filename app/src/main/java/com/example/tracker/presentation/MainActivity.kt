@@ -8,21 +8,29 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.tracker.MyWorker
 import com.example.tracker.R
+import com.example.tracker.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
+
+  // @Inject lateinit var viewModel: MainViewModel
     private lateinit var viewModel: MainViewModel
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val currentUser: FirebaseUser? = firebaseAuth.currentUser
-        /////val viewModel: MainViewModel by viewModels()
+    private lateinit var binding: ActivityMainBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+       // setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         val navHostFragment =

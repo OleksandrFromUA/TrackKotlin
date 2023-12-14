@@ -1,7 +1,9 @@
 package com.example.map.presentation
 
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.data.LocationData
 import com.example.map.domain.MapRepository
@@ -13,24 +15,18 @@ import kotlinx.coroutines.launch
 class MapViewModel:ViewModel() {
     private val mapRepository = MapRepository()
 
+
     private val _coordinatesFlow = MutableStateFlow<List<LocationData>>(emptyList())
-   // val coordinatesFlow: Flow<List<LocationData>> = _coordinatesFlow.asStateFlow()
-   
-    init {
-        viewModelScope.launch {
-            mapRepository.getCoordinatesForDay(System.currentTimeMillis())
-                .collect { currentCoordinates ->
-                    _coordinatesFlow.value = currentCoordinates
-                }
-        }
-    }
+    val coordinatesFlow: Flow<List<LocationData>> = _coordinatesFlow.asStateFlow()
 
-    /*init {
-        viewModelScope.launch {
-            mapRepository.getCoordinatesForDay(System.currentTimeMillis())
-        }
-    }*/
-
+     init {
+         viewModelScope.launch {
+             mapRepository.getCoordinatesForDay(System.currentTimeMillis())
+                 .collect { currentCoordinates ->
+                     _coordinatesFlow.value = currentCoordinates
+                 }
+         }
+     }
 
      fun updatingInterface(selectedDate: Long) {
         viewModelScope.launch {
@@ -40,7 +36,19 @@ class MapViewModel:ViewModel() {
                 }
         }
     }
-/*suspend fun updatingInterface(selectedDate: Long){
+
+     /*init {
+        viewModelScope.launch {
+            mapRepository.getCoordinatesForDay(System.currentTimeMillis())
+        }
+    }*/
+
+    /*  init {
+          viewModelScope.launch {
+              mapRepository.getCoordinatesForDay(System.currentTimeMillis()).asLiveData()
+          }
+      }*/
+  /*suspend fun updatingInterface(selectedDate: Long){
     viewModelScope.launch {
         mapRepository.getCoordinatesForDay(selectedDate)
     }

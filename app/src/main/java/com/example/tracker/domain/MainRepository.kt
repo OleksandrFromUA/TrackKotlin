@@ -18,7 +18,8 @@ constructor(private val myRoomDB: MyRoomDB){
     @SuppressLint("SuspiciousIndentation")
     fun getUserById(): Flow<List<UserData>>? {
     val uid: String? = firebaseAuth.currentUser?.uid
-        return uid?.let { myRoomDB.getUserDao().getUserById(it) }
+        return uid?.let {
+            myRoomDB.getUserDao().getUserById(it) }
     }
 
 

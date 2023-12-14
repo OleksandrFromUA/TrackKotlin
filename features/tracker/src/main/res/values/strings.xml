@@ -10,4 +10,7 @@
     <string name="the_user_did_not_grant_both_permissions">The user did not grant both permissions</string>
     <string name="gps_is_off">GPS is Off</string>
     <string name="gps_in_on">GPS in ON</string>
+    <string name="app_name">Tracker</string>
+    <string name="my_foreground_service">My foreground Service</string>
+    <string name="tracking_location">Tracking location</string>
 </resources>

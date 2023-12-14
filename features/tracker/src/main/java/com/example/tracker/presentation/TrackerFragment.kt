@@ -26,6 +26,7 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import com.example.tracker.MyForegroundService
 import com.example.tracker.R
 import com.example.tracker.databinding.FragmentTrackerBinding
 
@@ -60,13 +61,17 @@ class TrackerFragment : Fragment() {
     }
 
     private fun startTracker() {
-        //запуск MyForegroundService
+        val serviceIntent = Intent(requireContext(), MyForegroundService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            requireContext().startForegroundService(serviceIntent)
+        }
         isTracking = true
         binding.Start.text = getString(R.string.stop)
     }
 
     private fun stopTracker() {
-        //остановка MyForegroundService
+        val serviceIntentStop = Intent(requireContext(), MyForegroundService::class.java)
+        requireContext().stopService(serviceIntentStop)
         isTracking = false
         binding.Start.text = getString(R.string.start)
     }

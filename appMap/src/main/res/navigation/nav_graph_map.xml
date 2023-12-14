@@ -19,7 +19,7 @@
         app:destination="@id/map"/>
 
     <action
-        android:id="@+id/map_to_authFragment"
+        android:id="@+id/action_map_to_authFragment"
         app:destination="@id/authFragment" />
     <fragment
         android:id="@+id/map"
