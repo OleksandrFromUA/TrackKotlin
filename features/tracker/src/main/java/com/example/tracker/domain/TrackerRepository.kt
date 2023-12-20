@@ -1,6 +1,7 @@
 package com.example.tracker.domain
 
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -15,7 +16,12 @@ constructor(private val myRoomDB: MyRoomDB){
 
     suspend fun deleteDataFromRoom() = withContext(Dispatchers.Default){
         firebaseAuth.signOut()
+        Log.d("TrackerRepository", "Before deleting users: ${myRoomDB.getUserDao().getAllUsers()}")
+
         myRoomDB.getUserDao().deleteAllUsers()
+        Log.d("TrackerRepository", "After deleting users: ${myRoomDB.getUserDao().getAllUsers()}")
+
         myRoomDB.getLocationDao().deleteAllUsersByCoordination()
+
     }
 }

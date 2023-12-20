@@ -15,7 +15,6 @@ class AuthRepository
 constructor(private val myRoomDB: MyRoomDB) {
     private val firebaseAuth = FirebaseAuth.getInstance()
 
-    //@Inject lateinit var myRoomDB: MyRoomDB
     suspend fun saveToLocal(email: String) {
         withContext(Dispatchers.IO) {
             try {

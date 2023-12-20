@@ -18,10 +18,17 @@ constructor(private val repository: MainRepository): ViewModel() {
 
    val isLogged: LiveData<List<UserData>>? = repository.getUserById()?.asLiveData()
 
-   /* private val _userById = MutableLiveData<List<User>>()
-    val userById: LiveData<List<User>> get() = _userById
+   /* private val _userById = MutableLiveData<List<UserData>>()
+    val userBy: LiveData<List<UserData>> get() = _userById
 
-    fun getUserById() {
+    init{
+       viewModelScope.launch {
+          repository.getUserById()?.collect() {
+             _userById.value = it
+          }
+       }
+    }*/
+   /* fun getUserById() {
         viewModelScope.launch {
             repository.getUserById()?.collect() {
                 _userById.value = it

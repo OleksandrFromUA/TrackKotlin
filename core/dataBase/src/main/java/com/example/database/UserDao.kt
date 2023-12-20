@@ -15,6 +15,9 @@ interface UserDao {
     @Insert
     fun insertUser(user: UserData): Long
 
+     @Query("SELECT * FROM users")
+    fun getAllUsers(): List<UserData>
+
     @Query("DELETE FROM users")
     fun deleteAllUsers()
 

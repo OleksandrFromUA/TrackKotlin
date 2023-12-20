@@ -2,11 +2,12 @@ package com.example.tracker.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.example.tracker.MyWorker
 import com.example.tracker.R
 import com.example.tracker.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity(){
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val currentUser: FirebaseUser? = firebaseAuth.currentUser
     private lateinit var binding: ActivityMainBinding
-
+    //private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,15 +37,17 @@ class MainActivity : AppCompatActivity(){
         navController = navHostFragment.navController
 
         setupObservation()
-//MyWorker.startMyWorker(this)
+      //MyWorker.startMyWorker(this)
     }
      private fun setupObservation() {
         if (currentUser != null) {
             viewModel.isLogged?.observe(this, Observer { isLogged ->
                 if (isLogged != null) {
                     navController.navigate(R.id.action_authFragment_to_trackerFragment)
+                    Log.e("MainActivity","переход на trackerFragment")
                 } else {
                     navController.navigate(R.id.action_trackerFragment_to_authFragment)
+                    Log.e("MainActivity","переход на authFragment")
                 }
             })
         } else {
@@ -52,4 +55,17 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
+    /*   private fun setupObservation() {
+           if (currentUser != null) {
+               viewModel.isLogged?.observe(this, Observer { isLogged ->
+                   isLogged?.let {
+                       navController.navigate(R.id.action_authFragment_to_trackerFragment)
+                       Log.e("MainActivity","переход на trackerFragment")
+                   }?:navController.navigate(R.id.action_trackerFragment_to_authFragment)
+                   Log.e("MainActivity","переход на authFragment")
+
+       })
+   }
+
+       }*/
 }

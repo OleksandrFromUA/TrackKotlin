@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AuthFragment : Fragment() {
+class AuthFragment() : Fragment() {
     private lateinit var binding: FragmentAuthBinding
     private lateinit var authViewModel: AuthViewModel
     private lateinit var auth: FirebaseAuth
@@ -44,7 +44,7 @@ class AuthFragment : Fragment() {
                 if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     lifecycleScope.launch {
                         try {
-                            authViewModel.signIn(email, password).await()
+                            authViewModel.signIn(email, password)
                             Log.i("Auth", "User successfully signed in")
                             Toast.makeText(
                                 requireContext(),
@@ -132,8 +132,6 @@ class AuthFragment : Fragment() {
         }
 
         return binding.root
-
-
     }
 
 }

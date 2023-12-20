@@ -8,9 +8,10 @@ import com.example.app_map.databinding.ActivityMainBinding
 import com.example.map.InterfaceForNavigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import dagger.hilt.android.AndroidEntryPoint
 
 
-//@AndroidEntryPoint
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), InterfaceForNavigation {
     private lateinit var navController: NavController
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
