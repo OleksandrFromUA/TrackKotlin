@@ -44,7 +44,6 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("com.google.firebase:firebase-auth:22.3.0")
-   // implementation(project(mapOf("path" to ":core:data")))
     implementation("com.google.firebase:firebase-firestore-ktx:24.10.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -65,4 +64,5 @@ dependencies {
     implementation(project(":core:dataBase"))
     implementation(project(":core:data"))
 
+   // implementation ("androidx.hilt:hilt-work:1.0.0")
 }

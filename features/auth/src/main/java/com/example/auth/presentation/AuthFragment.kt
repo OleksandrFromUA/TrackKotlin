@@ -16,9 +16,11 @@ import com.example.auth.R
 import com.example.auth.databinding.FragmentAuthBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class AuthFragment : Fragment() {
     private lateinit var binding: FragmentAuthBinding
     private lateinit var authViewModel: AuthViewModel
@@ -53,7 +55,6 @@ class AuthFragment : Fragment() {
 
                         } catch (e: Exception) {
                             e.printStackTrace()
-                           // Log.e("Auth", "Error during authentication or saving to Room", e)
 
                             if (e is FirebaseAuthInvalidUserException) {
                                 Toast.makeText(
@@ -83,9 +84,11 @@ class AuthFragment : Fragment() {
             }
         }
 
+
         binding.signUp.setOnClickListener {
             val email = binding.InputNameText.text.toString()
             val password = binding.InputPasswordText.text.toString()
+
             if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
                 if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     lifecycleScope.launch {
@@ -93,31 +96,44 @@ class AuthFragment : Fragment() {
                             authViewModel.registrationAndSaveUser(email, password)
                             Toast.makeText(
                                 requireContext(),
-                                getString(R.string.registration_are_successful), Toast.LENGTH_SHORT
+                                getString(R.string.registration_are_successful),
+                                Toast.LENGTH_SHORT
                             ).show()
                         } catch (e: Exception) {
-                            Toast.makeText(
-                                requireContext(),
-                                getString(R.string.registration_failed), Toast.LENGTH_SHORT
-                            ).show()
-
+                            if (e is FirebaseAuthUserCollisionException) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(R.string.email_already_exists),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(R.string.registration_failed),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     }
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        getString(R.string.invalid_email), Toast.LENGTH_SHORT
+                        getString(R.string.invalid_email),
+                        Toast.LENGTH_SHORT
                     ).show()
                 }
             } else {
                 Toast.makeText(
                     requireContext(),
-                    getString(R.string.email_and_password_fields_are_empty), Toast.LENGTH_SHORT
+                    getString(R.string.email_and_password_fields_are_empty),
+                    Toast.LENGTH_SHORT
                 ).show()
             }
-
         }
 
         return binding.root
+
+
     }
+
 }

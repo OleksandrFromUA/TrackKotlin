@@ -13,4 +13,5 @@
     <string name="user_in_the_system">User in the System</string>
     <string name="user_not_registered_please_register">" User not registered, please register"</string>
     <string name="error_occurred">Error occurred</string>
+    <string name="email_already_exists">Email already exists</string>
 </resources>

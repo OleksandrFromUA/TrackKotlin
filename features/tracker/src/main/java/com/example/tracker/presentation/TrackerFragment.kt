@@ -29,13 +29,17 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.tracker.MyForegroundService
 import com.example.tracker.R
 import com.example.tracker.databinding.FragmentTrackerBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class TrackerFragment : Fragment() {
+@AndroidEntryPoint
+class TrackerFragment() : Fragment() {
     private lateinit var viewModel: ViewModelTracker
     private lateinit var binding: FragmentTrackerBinding
     private var isTracking: Boolean = false
     private var isGpsEnabled: Boolean = false
     private lateinit var locationManager: LocationManager
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -92,6 +96,7 @@ class TrackerFragment : Fragment() {
                 when (menuItem.itemId) {
                     R.id.action_logout -> {
                         viewModel.deleteData()
+                            //переход на AuthFragment
                         return true
                     }
                 }

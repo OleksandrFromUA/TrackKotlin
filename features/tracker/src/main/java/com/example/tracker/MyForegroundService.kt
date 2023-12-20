@@ -33,18 +33,18 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MyForegroundService
-@Inject
-constructor
-    (private val myRoomDB: MyRoomDB) : Service() {
+class MyForegroundService:Service(){
+
+    @Inject lateinit var myRoomDB: MyRoomDB
     private var job: Job? = null
     private val CHANNEL_ID = "my_channel"
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
+    private val fusedLocationProviderClient: FusedLocationProviderClient by lazy {
+        LocationServices.getFusedLocationProviderClient(this)
+    }
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         setupLocationUpdates()
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation  xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_navigation"
@@ -11,28 +12,25 @@
         android:label="AuthFragment"
         tools:layout="@layout/fragment_auth"/>
 
-   <!-- <action
-        android:id="@+id/action_authFragment_to_map"
-        app:destination="@id/map" />-->
     <action
-        android:id="@+id/action_track_to_map"
-        app:destination="@id/map"/>
+        android:id="@+id/action_trackerFragment_to_mapFragment"
+        app:destination="@id/mapFragment"/>
 
     <action
-        android:id="@+id/action_map_to_authFragment"
+        android:id="@+id/action_mapFragment_to_authFragment"
         app:destination="@id/authFragment" />
     <fragment
-        android:id="@+id/map"
+        android:id="@+id/mapFragment"
         android:name="com.example.map.presentation.MapFragment"
         android:label="MapFragment"
         tools:layout="@layout/fragment_map" />
 
     <action
-        android:id="@+id/action_map_to_track"
-        app:destination="@id/track" />
+        android:id="@+id/action_mapFragment_to_trackerFragment"
+        app:destination="@id/trackerFragment" />
 
     <fragment
-        android:id="@+id/track"
+        android:id="@+id/trackerFragment"
         android:name="com.example.tracker.presentation.TrackerFragment"
         android:label="TrackFragment"
         tools:layout="@layout/fragment_tracker" />

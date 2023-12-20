@@ -5,19 +5,17 @@ import com.example.data.LocationData
 import com.example.data.UserData
 import com.example.database.MyRoomDB
 import com.google.firebase.auth.FirebaseAuth
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-
-//@AndroidEntryPoint
 class AuthRepository
 @Inject
 constructor(private val myRoomDB: MyRoomDB) {
     private val firebaseAuth = FirebaseAuth.getInstance()
 
+    //@Inject lateinit var myRoomDB: MyRoomDB
     suspend fun saveToLocal(email: String) {
         withContext(Dispatchers.IO) {
             try {
@@ -66,6 +64,5 @@ constructor(private val myRoomDB: MyRoomDB) {
             deferred
         }
     }
-
-
 }
+

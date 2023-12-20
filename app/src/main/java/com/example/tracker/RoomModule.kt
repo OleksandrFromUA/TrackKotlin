@@ -4,7 +4,6 @@ package com.example.tracker
 import android.content.Context
 import androidx.room.Room
 import com.example.database.LocationDao
-//import com.example.database.MyAppApplication
 import com.example.database.MyRoomDB
 import com.example.database.UserDao
 import dagger.Module
@@ -18,19 +17,9 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RoomModule {
 
-  /* @Singleton
-   @Provides
-   fun getDB(): MyRoomDB?{
-       return MyApplication.getAppContext()?.let {
-           Room.databaseBuilder(
-               it,
-               MyRoomDB::class.java, "location_database")
-               .build()
-       }
-   }*/
 
-    @Singleton
     @Provides
+    @Singleton
 fun getDB(@ApplicationContext context: Context): MyRoomDB {
     return Room.databaseBuilder(
         context,
@@ -39,14 +28,18 @@ fun getDB(@ApplicationContext context: Context): MyRoomDB {
 }
 
 
-   @Singleton
    @Provides
+   @Singleton
    fun getUserDao(myRoomDB: MyRoomDB): UserDao {
        return myRoomDB.getUserDao()
    }
-    @Singleton
+
     @Provides
+    @Singleton
     fun getLocationDao(myRoomDB: MyRoomDB): LocationDao {
         return myRoomDB.getLocationDao()
     }
+
 }
+
+

@@ -12,13 +12,11 @@ import com.example.tracker.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
     private lateinit var navController: NavController
 
-  // @Inject lateinit var viewModel: MainViewModel
     private lateinit var viewModel: MainViewModel
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val currentUser: FirebaseUser? = firebaseAuth.currentUser
@@ -27,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       // setContentView(R.layout.activity_main)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -38,11 +36,9 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         setupObservation()
-       MyWorker.startMyWorker(this)
+//MyWorker.startMyWorker(this)
     }
-
-
-    private fun setupObservation() {
+     private fun setupObservation() {
         if (currentUser != null) {
             viewModel.isLogged?.observe(this, Observer { isLogged ->
                 if (isLogged != null) {
@@ -55,4 +51,5 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.action_trackerFragment_to_authFragment)
         }
     }
+
 }

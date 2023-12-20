@@ -4,6 +4,7 @@ plugins {
     id ("kotlin-kapt")
    // id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 
 }
 
@@ -60,4 +61,6 @@ dependencies {
     implementation(project(":core:data"))
 
     implementation ("androidx.room:room-runtime:2.6.1")
+
+    //implementation ("com.google.android.gms:play-services-auth:20.7.0")
 }

@@ -6,18 +6,11 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.hilt.work.HiltWorker
-import androidx.lifecycle.lifecycleScope
-import androidx.work.Constraints
-import androidx.work.ListenableWorker
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequest
-import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.database.MyRoomDB
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.concurrent.TimeUnit
 import com.example.data.LocationData
 import com.example.data.UserData
 import com.google.firebase.auth.FirebaseAuth
@@ -27,50 +20,46 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @HiltWorker
 class MyWorker @AssistedInject constructor(
-   @Assisted context: Context,
-   @Assisted workerParams: WorkerParameters,
-   private val myRoomDB: MyRoomDB): Worker(context, workerParams) {
+    @Assisted context: Context,
+    @Assisted workerParams: WorkerParameters,
+     private val myRoomDB: MyRoomDB):
+    Worker(context, workerParams) {
 
-    override fun doWork(): Result {
-        TODO("Not yet implemented")
-    }
-   /*override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
-     //  return@withContext try {
-       try {
-            val coordinatesFromRoom = getCoordinatesFromRoom()
-            val usersFromRoom = getUsersFromRoom()
 
-            if (isInternetAvailable()) {
-                val successSend = sendCoordinatesToFirebase(usersFromRoom, coordinatesFromRoom)
-                if (successSend) {
-                    deleteCoordinatesFromRoom(coordinatesFromRoom)
-                    Log.e("log", "deleteCoordinatesFromRoom")
-                    return@withContext Result.success()
-                   // Result.success()
+    override fun doWork(): Result = runBlocking(Dispatchers.IO) {
+      //  return@runBlocking withContext(Dispatchers.IO) {
+
+            try {
+                Log.e("worker", "doWork")
+                val coordinatesFromRoom = getCoordinatesFromRoom()
+                val usersFromRoom = getUsersFromRoom()
+
+                if (isInternetAvailable()) {
+                    val successSend = sendCoordinatesToFirebase(usersFromRoom, coordinatesFromRoom)
+                    if (successSend) {
+                        deleteCoordinatesFromRoom(coordinatesFromRoom)
+                        Log.e("log", "deleteCoordinatesFromRoom")
+                        Result.success()
+                    } else {
+                        Log.e("log", "Failed to send data to the cloud")
+                        Result.retry()
+                    }
                 } else {
-                    Log.e("log", "Failed to send data to the cloud")
-                    return@withContext Result.retry()
-                   // Result.retry()
+                    Log.e("log", "No internet")
+                    Result.retry()
                 }
-            } else {
-                Log.e("log", "No internet")
-               return@withContext Result.retry()
-               // Result.retry()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Result.failure()
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-           return@withContext Result.failure()
-           //Result.failure()
-        }
-    }*/
+      //  }
+    }
 
-    companion object {
+   /* companion object {
         fun startMyWorker(context: Context) {
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -85,7 +74,7 @@ class MyWorker @AssistedInject constructor(
 
             WorkManager.getInstance(context).enqueue(syncWorkRequest)
         }
-    }
+    }*/
 
     private suspend fun getCoordinatesFromRoom(): List<LocationData> = withContext(Dispatchers.IO) {
         val locationDao = myRoomDB.getLocationDao()

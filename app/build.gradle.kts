@@ -63,6 +63,7 @@ dependencies {
 
     implementation("androidx.hilt:hilt-common:1.1.0")
     implementation("com.google.firebase:firebase-auth:22.3.0")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -82,14 +83,17 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
-
+    implementation ("com.google.dagger:hilt-android:2.48")
+    implementation ("androidx.hilt:hilt-work:1.1.0")////
     implementation("androidx.work:work-runtime:2.9.0")
+    kapt("androidx.hilt:hilt-compiler:1.1.0")///
 
     implementation(project(":core:data"))
     implementation(project(":core:dataBase"))
     implementation(project(":features:auth"))
     implementation(project(":features:map"))
     implementation(project(":features:tracker"))
+   // implementation(project(":appMap"))
 
     implementation("androidx.room:room-runtime:2.6.1")
 

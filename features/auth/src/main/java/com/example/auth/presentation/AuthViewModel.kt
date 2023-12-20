@@ -1,12 +1,15 @@
 package com.example.auth.presentation
 
+
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.auth.domain.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.Exception
@@ -36,6 +39,23 @@ constructor(private val repository: AuthRepository): ViewModel() {
             deferred
         }
     }
+  /* private suspend fun registration(email: String, password: String) {
+       return withContext(Dispatchers.IO) {
+           try {
+               firebaseAuth.createUserWithEmailAndPassword(email, password)
+                   .addOnSuccessListener {
+                       // успех
+                   }
+                   .addOnFailureListener { exception ->
+                       // ошибка
+                       exception.printStackTrace()
+                   }
+           } catch (e: Exception) {
+               // другие исключения
+               e.printStackTrace()
+           }
+       }
+   }*/
 
     suspend fun signIn(email: String, password: String): CompletableDeferred<Unit> {
         return withContext(Dispatchers.IO) {
@@ -60,32 +80,15 @@ constructor(private val repository: AuthRepository): ViewModel() {
     }
 
     suspend fun registrationAndSaveUser(email: String, password: String) {
-        try {
+        viewModelScope.launch {
             registration(email, password).await()
             val currentUid = getCurrentUserUid()
             repository.saveUserToRoom(currentUid, email)
-        }catch (e:Exception){
-throw e
-//e.printStackTrace()
         }
+
     }
- /*  suspend fun registrationAndSaveUser(email: String, password: String) {
-       try {
-           coroutineScope {
-               val registrationDeferred = async { registration(email, password) }
 
-               val currentUidDeferred = async { getCurrentUserUid() }
 
-               val registrationResult = registrationDeferred.await()
-               val currentUid = currentUidDeferred.await()
-
-               authRepository.saveUserToRoom(currentUid, email)
-           }
-       } catch (e: Exception) {
-
-           throw e
-       }
-   }*/
     override fun onCleared() {
         super.onCleared()
     }
