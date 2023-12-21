@@ -41,13 +41,15 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 
-class MapFragment(private val interfaceForNavigation: InterfaceForNavigation) : Fragment(), OnMapReadyCallback {
+class MapFragment(private val interfaceForNavigation:InterfaceForNavigation) : Fragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentMapBinding
     private lateinit var viewModel: MapViewModel
     private lateinit var myGoogleMap: GoogleMap
 
+    //private lateinit var interfaceForNavigation:InterfaceForNavigation
     companion object {
         private const val REQUEST_CODE_LOCATION_PERMISSION = 1
+
     }
 
     override fun onCreateView(

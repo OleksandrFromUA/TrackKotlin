@@ -2,6 +2,7 @@ package com.example.map.domain
 
 
 
+import android.util.Log
 import com.example.data.LocationData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,13 +22,14 @@ class MapRepository() {
         val uid = firebaseAuth.currentUser?.uid
         return flow {
             uid.let {
+           // if(uid!=null){
                 try {
                     val startOfDayTimestamp = startOfDayTimeStamp(selectedDate)
                     val endOfDayTimestamp = endOfDayTimeStamp(selectedDate)
 
                     val querySnapshot = firebaseFirestore.collection("location")
                         .whereEqualTo("userId", uid)
-                        .whereGreaterThanOrEqualTo("timeToServer", startOfDayTimestamp)
+                        .whereGreaterThanOrEqualTo("timeCoordinate", startOfDayTimestamp)
                         .whereLessThanOrEqualTo("timeToServer", endOfDayTimestamp)
                         .get()
                         .await()

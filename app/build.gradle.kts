@@ -87,6 +87,7 @@ dependencies {
     implementation ("androidx.hilt:hilt-work:1.1.0")////
     implementation("androidx.work:work-runtime:2.9.0")
     kapt("androidx.hilt:hilt-compiler:1.1.0")///
+    implementation ("androidx.work:work-runtime-ktx:2.9.0")
 
     implementation(project(":core:data"))
     implementation(project(":core:dataBase"))

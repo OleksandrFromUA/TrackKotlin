@@ -42,7 +42,7 @@
             android:stopWithTask="true"
             tools:ignore="ForegroundServicePermission,WrongManifestParent" />
 
-        <provider
+      <!--  <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
@@ -53,7 +53,7 @@
             android:value="androidx.startup"
             tools:node="remove" />
 
-    </provider>
+    </provider>-->
 
     </application>
 

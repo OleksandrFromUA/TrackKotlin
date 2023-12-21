@@ -8,16 +8,22 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
+import com.example.tracker.MyWorker
 import com.example.tracker.R
 import com.example.tracker.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(){
+class MainActivity: AppCompatActivity(){
     private lateinit var navController: NavController
-
     private lateinit var viewModel: MainViewModel
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val currentUser: FirebaseUser? = firebaseAuth.currentUser
@@ -26,6 +32,12 @@ class MainActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+       // val request = OneTimeWorkRequestBuilder<MyWorker>().build()
+       // WorkManager.getInstance(applicationContext).enqueue(request)
+
+       // WorkManager.getInstance().beginUniqueWork("UniqueWork", ExistingWorkPolicy.REPLACE,
+         //   OneTimeWorkRequest.Companion.from(MyWorker::class.java)).enqueue()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -37,7 +49,7 @@ class MainActivity : AppCompatActivity(){
         navController = navHostFragment.navController
 
         setupObservation()
-      //MyWorker.startMyWorker(this)
+      MyWorker.startMyWorker(this)
     }
      private fun setupObservation() {
         if (currentUser != null) {

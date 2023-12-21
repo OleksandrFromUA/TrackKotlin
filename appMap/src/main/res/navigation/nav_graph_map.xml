@@ -12,9 +12,9 @@
         android:label="AuthFragment"
         tools:layout="@layout/fragment_auth"/>
 
-    <action
+   <!-- <action
         android:id="@+id/action_trackerFragment_to_mapFragment"
-        app:destination="@id/mapFragment"/>
+        app:destination="@id/mapFragment"/>-->
 
     <action
         android:id="@+id/action_mapFragment_to_authFragment"
@@ -26,12 +26,12 @@
         tools:layout="@layout/fragment_map" />
 
     <action
-        android:id="@+id/action_mapFragment_to_trackerFragment"
-        app:destination="@id/trackerFragment" />
+        android:id="@+id/action_authFragment_to_mapFragment"
+        app:destination="@id/mapFragment" />
 
-    <fragment
+    <!--<fragment
         android:id="@+id/trackerFragment"
         android:name="com.example.tracker.presentation.TrackerFragment"
         android:label="TrackFragment"
-        tools:layout="@layout/fragment_tracker" />
+        tools:layout="@layout/fragment_tracker" />-->
 </navigation>

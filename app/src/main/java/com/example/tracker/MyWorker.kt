@@ -6,6 +6,11 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.hilt.work.HiltWorker
+import androidx.work.Constraints
+import androidx.work.CoroutineWorker
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.database.MyRoomDB
@@ -21,46 +26,48 @@ import com.google.firebase.firestore.SetOptions
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.runBlocking
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @HiltWorker
 class MyWorker @AssistedInject constructor(
-    @Assisted context: Context,
-    @Assisted workerParams: WorkerParameters,
-     private val myRoomDB: MyRoomDB):
+     @Assisted context: Context,
+     @Assisted workerParams: WorkerParameters,
+    private var myRoomDB: MyRoomDB
+     ):
     Worker(context, workerParams) {
 
-
     override fun doWork(): Result = runBlocking(Dispatchers.IO) {
-      //  return@runBlocking withContext(Dispatchers.IO) {
+        //  return@runBlocking withContext(Dispatchers.IO) {
+        try {
+            Log.e("worker", "doWork")
+            val coordinatesFromRoom = getCoordinatesFromRoom()
+            val usersFromRoom = getUsersFromRoom()
 
-            try {
-                Log.e("worker", "doWork")
-                val coordinatesFromRoom = getCoordinatesFromRoom()
-                val usersFromRoom = getUsersFromRoom()
-
-                if (isInternetAvailable()) {
-                    val successSend = sendCoordinatesToFirebase(usersFromRoom, coordinatesFromRoom)
-                    if (successSend) {
-                        deleteCoordinatesFromRoom(coordinatesFromRoom)
-                        Log.e("log", "deleteCoordinatesFromRoom")
-                        Result.success()
-                    } else {
-                        Log.e("log", "Failed to send data to the cloud")
-                        Result.retry()
-                    }
+            if (isInternetAvailable()) {
+                val successSend = sendCoordinatesToFirebase(usersFromRoom, coordinatesFromRoom)
+                if (successSend) {
+                    deleteCoordinatesFromRoom(coordinatesFromRoom)
+                    Log.e("log", "deleteCoordinatesFromRoom")
+                    Result.success()
                 } else {
-                    Log.e("log", "No internet")
+                    Log.e("log", "Failed to send data to the cloud")
                     Result.retry()
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Result.failure()
+            } else {
+                Log.e("log", "No internet")
+                Result.retry()
             }
-      //  }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.failure()
+        }
+        //  }
     }
 
-   /* companion object {
+    companion object {
         fun startMyWorker(context: Context) {
+            Log.e("worker", "startMyWorker")
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
@@ -74,7 +81,7 @@ class MyWorker @AssistedInject constructor(
 
             WorkManager.getInstance(context).enqueue(syncWorkRequest)
         }
-    }*/
+    }
 
     private suspend fun getCoordinatesFromRoom(): List<LocationData> = withContext(Dispatchers.IO) {
         val locationDao = myRoomDB.getLocationDao()
@@ -103,11 +110,10 @@ class MyWorker @AssistedInject constructor(
 
     private suspend fun sendCoordinatesToFirebase(users: List<UserData>, coordinates: List<LocationData>): Boolean {
         val db = FirebaseFirestore.getInstance()
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val currentUser = firebaseAuth.currentUser
-
-        currentUser?.let { user ->
-            val uidUser = user.uid
+          val firebaseAuth = FirebaseAuth.getInstance()
+          val currentUser = firebaseAuth.currentUser
+         currentUser?.let { user ->
+              val uidUser = user.uid
             val userReference: CollectionReference = db.collection("users")
             val documentReference: DocumentReference = userReference.document(uidUser)
             val timeCoordinate = System.currentTimeMillis()
@@ -127,11 +133,13 @@ class MyWorker @AssistedInject constructor(
                     "latitude" to locationData.latitude,
                     "longitude" to locationData.longitude,
                     "timeCoordinate" to locationData.timeGettingCoordinate,
-                    "timeToServer" to timeCoordinate)
+                    "timeToServer" to timeCoordinate
+                )
                 locationReference.add(newLocationData)
             }
             return true
         } ?: return false
+
     }
 
     private suspend fun deleteCoordinatesFromRoom(coordinates: List<LocationData>) {

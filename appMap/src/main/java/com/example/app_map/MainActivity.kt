@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.app_map.databinding.ActivityMainBinding
 import com.example.map.InterfaceForNavigation
+import com.example.map.presentation.MapFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,15 +26,18 @@ class MainActivity : AppCompatActivity(), InterfaceForNavigation {
         setContentView(binding.root)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_map) as NavHostFragment
         navController = navHostFragment.navController
-            // setupObservation()
+         setupObservation()
+
     }
 
-   /* private fun setupObservation(){
-        currentUser?.let {
-            navController.navigate(R.id.action_trackerFragment_to_mapFragment)
-        }?: navController.navigate(R.id.action_mapFragment_to_authFragment)
-    }*/
+    private fun setupObservation(){
+        if(currentUser!=null){
+            navController.navigate(R.id.action_authFragment_to_mapFragment)
+        }else{
+            navController.navigate(R.id.action_mapFragment_to_authFragment)
+        }
 
+    }
     override fun navigateToAuthFragment(){
         currentUser?.let {
             navController.navigate(R.id.action_mapFragment_to_authFragment)
