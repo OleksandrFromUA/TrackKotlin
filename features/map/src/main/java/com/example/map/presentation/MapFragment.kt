@@ -1,10 +1,9 @@
 package com.example.map.presentation
 
-import android.Manifest
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -18,9 +17,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
@@ -41,16 +39,13 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 
-class MapFragment(private val interfaceForNavigation:InterfaceForNavigation) : Fragment(), OnMapReadyCallback {
+class MapFragment() : Fragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentMapBinding
     private lateinit var viewModel: MapViewModel
     private lateinit var myGoogleMap: GoogleMap
 
-    //private lateinit var interfaceForNavigation:InterfaceForNavigation
-    companion object {
-        private const val REQUEST_CODE_LOCATION_PERMISSION = 1
+    private lateinit var interfaceForNavigation:InterfaceForNavigation
 
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,11 +56,7 @@ class MapFragment(private val interfaceForNavigation:InterfaceForNavigation) : F
 
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbarMap)
 
-        if (areLocationPermissionsGranted()) {
-            initializeMap()
-        } else {
-            requestLocationPermissions()
-        }
+        requestLocationPermissions()
 
         return binding.root
     }
@@ -75,52 +66,24 @@ class MapFragment(private val interfaceForNavigation:InterfaceForNavigation) : F
         setAppBarMenu()
     }
 
-    /*@Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_LOCATION_PERMISSION) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                initializeMap()
-            } else {
-
-            }
-        }
-    }*/
     private fun initializeMap() {
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
 
-    private fun areLocationPermissionsGranted(): Boolean {
-        return (ContextCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED)
-    }
 
     private fun requestLocationPermissions() {
-        if (isInternetAvailable()) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_NETWORK_STATE
-                ),
-                REQUEST_CODE_LOCATION_PERMISSION
-            )
-        } else {
+        if (isInternetAvailable()){
+            initializeMap()
+        }else{
+            Toast.makeText(requireContext(), "Интернет соединение отсутствует, пройдите в настройки и включите интернет",
+                     Toast.LENGTH_SHORT).show()
             val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
             startActivity(intent)
-            //  Toast.makeText(requireContext(), "Интернет соединение отсутствует, пройдите в настройки и включите интернет",
-            //     Toast.LENGTH_SHORT).show()
         }
     }
+
    private fun isInternetAvailable(): Boolean {
        val connectivityManager =
            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
